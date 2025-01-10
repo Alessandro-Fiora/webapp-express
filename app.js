@@ -8,7 +8,7 @@ app.use(express.static("public"));
 
 // ^ REGISTERING ROUTES
 const moviesRouter = require("./routers/moviesRouter");
-app.use("/movies", moviesRouter);
+app.use("/api/movies", moviesRouter);
 
 // ^ ERROR HANDLERS
 const errorsHandler = require("./middlewares/errorsHandler");
