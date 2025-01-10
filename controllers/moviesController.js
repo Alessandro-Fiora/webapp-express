@@ -41,6 +41,14 @@ function show(req, res) {
       });
     }
     const [movie] = movieResults;
+
+    if (!movie) {
+      return res.status(404).json({
+        status: "KO",
+        message: "Movie not found",
+      });
+    }
+
     movie.image = generateMovieImagePath(movie.image);
 
     const sqlReviews =
