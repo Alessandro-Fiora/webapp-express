@@ -2,8 +2,25 @@ const connection = require("../db/conn");
 
 // ^ INDEX
 function index(req, res) {
-  const sql = "SELECT id, title, director, genre, image FROM movies";
-  connection.query(sql, (err, results) => {
+  let sql = "SELECT id, title, director, genre, image FROM movies";
+
+  //* RESEARCH FILTERS
+  let queryParams = [];
+  let firstFilter = true;
+
+  if (req.query.title) {
+    sql += ` ${firstFilter ? "WHERE" : "AND"} title LIKE ?`;
+    queryParams.push(`%${req.query.title}%`);
+    firstFilter = false;
+  }
+
+  if (req.query.director) {
+    sql += ` ${firstFilter ? "WHERE" : "AND"} director LIKE ?`;
+    queryParams.push(`%${req.query.director}%`);
+    firstFilter = false;
+  }
+
+  connection.query(sql, queryParams, (err, results) => {
     // Query error handler
     if (err) {
       console.log(err);
@@ -42,6 +59,7 @@ function show(req, res) {
     }
     const [movie] = movieResults;
 
+    // Movie id not found handler
     if (!movie) {
       return res.status(404).json({
         status: "KO",
