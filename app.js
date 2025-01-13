@@ -1,8 +1,14 @@
 // ^ INIT EXPRESS
 const express = require("express");
+const cors = require("cors");
+const corsOptions = {
+  origin: process.env.APP_FRONTEND_URL,
+  optionSuccessStatus: 200,
+};
 const app = express();
 
 // ^ REGISTERING MIDDLEWARES
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
 
